@@ -15,14 +15,14 @@ pipeline{
 		stage('Test'){
 			steps{
 		sh "docker run --rm -d -p 3000:3000 $REGISTRY/$IMAGE:$TAG"
-		sg "sleep 2 && curl -fsSL http://localhost:3000"
+		sh "sleep 2 && curl -fsSL http://localhost:3000"
 		}
 }	
 		stage('Push'){
 			steps{
 				withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
 		sh "echo $PASS | docker login -u $USER --password-stdin"
-		sh docker push $REGISTRY/$IMAGE:$TAG"
+		sh "docker push $REGISTRY/$IMAGE:$TAG"
 }	
 	}
 	}
@@ -37,4 +37,4 @@ pipeline{
 
 
 
-}_
+}
